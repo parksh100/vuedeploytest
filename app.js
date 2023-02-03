@@ -10,6 +10,11 @@ app.get("/api", (req, res) => {
   res.send(user);
 });
 
+
+app.get("/", (req, res) => {
+  res.send("홈페이지 오신 것을 환영합니다");
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
