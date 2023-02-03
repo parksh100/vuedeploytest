@@ -1,11 +1,33 @@
 const express = require("express");
+const session = require("express-session");
 const app = express();
 const port = 3000;
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
 
+// mongodb
+require("dotenv").config({ path: "mongodb/.env" });
+const mongoose = require("mongoose");
+
+// mysql
+require("dotenv").config({ path: "mysql/.env" });
+
 app.use(cors());
+app.use("/static/images", express.static("public/images"));
+
+// session
+let sess = {
+  secret: "keyboard cat",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 1000 * 60 * 60, // 1시간
+    httpOnly: true,
+    secure: false,
+  },
+};
+app.use(session(sess));
 
 const user = ["박성훈", "이상영", "잭슨", "박정은", "박채은"];
 app.get("/api", (req, res) => {
