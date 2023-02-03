@@ -62,6 +62,6 @@ app.post(
   fileUpload.single("attachment"),
   async (req, res) => {
     console.log(req.file);
-    res.send(fileInfo);
+    res.send(req.file);
   }
 );
