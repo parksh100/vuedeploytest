@@ -51,6 +51,7 @@ app.post(
       filename: req.file.filename,
       path: req.file.path,
     };
+    res.send("파일 업로드 성공");
     res.send(fileInfo);
   }
 );
