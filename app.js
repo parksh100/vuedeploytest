@@ -10,7 +10,6 @@ app.get("/api", (req, res) => {
   res.send(user);
 });
 
-
 app.get("/", (req, res) => {
   res.send("홈페이지 오신 것을 환영합니다");
 });
@@ -19,6 +18,67 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
-app.use(express.json({
-  limit:"50mb"
-}))
+app.use(
+  express.json({
+    limit: "50mb",
+  })
+);
+
+// multer image upload
+const imageStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().valueOf() + path.extname(file.originalname));
+  },
+});
+const imgageUpload = multer({ storage: imageStorage });
+
+app.post(
+  "/api/upload/image",
+  imgageUpload.single("attachment"),
+  async (req, res) => {
+    const fileInfo = {
+      auditor_id: parseInt(req.body.auditor_id),
+      originalname: stringUtils.cleanPath(
+        new String(
+          file.getOriginalname().getBytes("8859_1"),
+          StandardCharsets.UTF_8
+        )
+      ),
+      mimetype: req.file.mimetype,
+      filename: req.file.filename,
+      path: req.file.path,
+    };
+    res.send(fileInfo);
+  }
+);
+
+// multer file upload
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads");
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().valueOf() + path.extname(file.originalname));
+  },
+});
+const fileUpload = multer({ storage: fileStorage });
+
+app.post(
+  "/api/upload/file",
+  fileUpload.single("attachment"),
+  async (req, res) => {
+    const fileInfo = {
+      customer_id: parseInt(req.body.customer_id),
+      originalname: Buffer.from(req.file.originalname, "latin1").toString(
+        "utf-8"
+      ),
+      mimetype: req.file.mimetype,
+      filename: req.file.filename,
+      path: req.file.path,
+    };
+    res.send(fileInfo);
+  }
+);
