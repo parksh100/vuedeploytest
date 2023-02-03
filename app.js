@@ -34,11 +34,11 @@ const imageStorage = multer.diskStorage({
     cb(null, new Date().valueOf() + path.extname(file.originalname));
   },
 });
-const imgageUpload = multer({ storage: imageStorage });
+const imageUpload = multer({ storage: imageStorage });
 
 app.post(
   "/api/upload/image",
-  imgageUpload.single("attachment"),
+  imageUpload.single("attachment"),
   async (req, res) => {
     const fileInfo = {
       auditor_id: parseInt(req.body.auditor_id),
