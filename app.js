@@ -41,20 +41,8 @@ app.post(
   "/api/upload/image",
   imageUpload.single("attachment"),
   async (req, res) => {
-    const fileInfo = {
-      auditor_id: parseInt(req.body.auditor_id),
-      originalname: stringUtils.cleanPath(
-        new String(
-          file.getOriginalname().getBytes("8859_1"),
-          StandardCharsets.UTF_8
-        )
-      ),
-      mimetype: req.file.mimetype,
-      filename: req.file.filename,
-      path: req.file.path,
-    };
-    res.send("파일 업로드 성공");
-    res.send(fileInfo);
+    console.log(req.file);
+    res.send(req.file);
   }
 );
 
@@ -73,15 +61,7 @@ app.post(
   "/api/upload/file",
   fileUpload.single("attachment"),
   async (req, res) => {
-    const fileInfo = {
-      customer_id: parseInt(req.body.customer_id),
-      originalname: Buffer.from(req.file.originalname, "latin1").toString(
-        "utf-8"
-      ),
-      mimetype: req.file.mimetype,
-      filename: req.file.filename,
-      path: req.file.path,
-    };
+    console.log(req.file);
     res.send(fileInfo);
   }
 );
