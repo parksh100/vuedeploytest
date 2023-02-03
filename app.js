@@ -18,3 +18,7 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+app.use(express.json({
+  limit:"50mb"
+}))
