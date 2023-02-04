@@ -79,7 +79,10 @@ app.post(
       path: req.file.path,
     };
 
-    res.send(fileInfo);
+    // res.send("fileInfo", fileInfo);
+    res.status(200).send(fileInfo);
+    // res.send("req.file", req.file);
+    // res.status(200).send(req.file);
   }
 );
 
