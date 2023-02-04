@@ -5,6 +5,7 @@ const port = 3000;
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
+const mysql = require("./mysql");
 
 // mongodb
 require("dotenv").config({ path: "mongodb/.env" });
@@ -38,6 +39,12 @@ app.get("/", (req, res) => {
   res.send("홈페이지 오신 것을 환영합니다");
 });
 
+app.post("/api/login", (req, res) => {
+  const { email, pw } = req.body.param;
+  console.log(email, pw);
+  res.send({ email, pw });
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
@@ -59,12 +66,20 @@ const imageStorage = multer.diskStorage({
 });
 const imageUpload = multer({ storage: imageStorage });
 
+// image upload
 app.post(
   "/api/upload/image",
   imageUpload.single("attachment"),
   async (req, res) => {
-    console.log(req.file);
-    res.send(req.file);
+    const fileInfo = {
+      // product_id: parseInt(req.body.product_id),
+      originalname: req.file.originalname,
+      mimetype: req.file.mimetype,
+      filename: req.file.filename,
+      path: req.file.path,
+    };
+
+    res.send(fileInfo);
   }
 );
 
@@ -79,11 +94,51 @@ const fileStorage = multer.diskStorage({
 });
 const fileUpload = multer({ storage: fileStorage });
 
+// route
+const productRouter = require("./routes/product");
+app.use("/api/product", productRouter);
+
 app.post(
   "/api/upload/file",
   fileUpload.single("attachment"),
   async (req, res) => {
-    console.log(req.file);
-    res.send(req.file);
+    const fileInfo = {
+      // product_id: parseInt(req.body.product_id),
+      originalname: req.file.originalname,
+      mimetype: req.file.mimetype,
+      filename: req.file.filename,
+      path: req.file.path,
+    };
+
+    res.send(fileInfo);
+  }
+);
+
+// file download
+app.get("/api/file/:filename", (req, res) => {
+  const file = "./uploads/" + req.params.filename;
+  try {
+    if (fs.existsSync(file)) {
+      res.download(file);
+    } else {
+      res.send("요청한 파일이 존재하지 않습니다.");
+    }
+  } catch (e) {
+    console.log(e);
+    res.send("파일을 다운로드 하는 중 에러가 발생했습니다.");
+  }
+});
+
+// excel upload
+app.post(
+  "/api/upload/excel",
+  fileUpload.single("attachment"),
+  async (req, res) => {
+    const workbook = xlsx.readFile(req.file.path);
+    const firstSheetName = workbook.SheetNames[0];
+    const firstSheet = workbook.Sheets[firstSheetName];
+    const firstSheetJson = xlsx.utils.sheet_to_json(firstSheet);
+
+    res.send(firstSheetJson);
   }
 );
