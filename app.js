@@ -28,19 +28,6 @@ app.use(cors());
 app.use("/static/images", express.static("public/images"));
 app.use("/static/uploads", express.static("uploads")); // 서버에서 이미지를 다운받아야 할때 사용. static("열어줄 폴더")
 
-// session
-let sess = {
-  secret: "keyboard cat",
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    maxAge: 1000 * 60 * 60, // 1시간
-    httpOnly: true,
-    secure: false,
-  },
-};
-app.use(session(sess));
-
 const user = ["박성훈", "이상영", "잭슨", "박정은", "박채은"];
 app.get("/api", (req, res) => {
   // res.send(user);
@@ -49,12 +36,6 @@ app.get("/api", (req, res) => {
 
 app.get("/", (req, res) => {
   res.send("홈페이지 오신 것을 환영합니다");
-});
-
-app.post("/api/login", (req, res) => {
-  const { email, pw } = req.body.param;
-  console.log(email, pw);
-  res.send({ email, pw });
 });
 
 app.use(
