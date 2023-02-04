@@ -32,7 +32,8 @@ app.use(session(sess));
 
 const user = ["박성훈", "이상영", "잭슨", "박정은", "박채은"];
 app.get("/api", (req, res) => {
-  res.send(user);
+  // res.send(user);
+  res.status(200).send(user);
 });
 
 app.get("/", (req, res) => {
