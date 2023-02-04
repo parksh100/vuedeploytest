@@ -104,7 +104,8 @@ app.post(
       filename: req.file.filename,
       path: req.file.path,
     };
-    res.send(fileInfo);
+    // res.send(fileInfo);
+    res.status(200).send(fileInfo);
   }
 );
 
