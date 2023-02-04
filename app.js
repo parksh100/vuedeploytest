@@ -45,39 +45,39 @@ app.use(
 );
 
 // multer image upload
-const imageStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public/images");
-  },
-  filename: (req, file, cb) => {
-    cb(null, new Date().valueOf() + path.extname(file.originalname));
-  },
-});
-const imageUpload = multer({ storage: imageStorage });
+// const imageStorage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "public/images");
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, new Date().valueOf() + path.extname(file.originalname));
+//   },
+// });
+// const imageUpload = multer({ storage: imageStorage });
 
-app.post(
-  "/api/upload/image",
-  imageUpload.single("attachment"),
-  async (req, res) => {
-    const fileInfo = {
-      // product_id: parseInt(req.body.product_id),
-      originalname: StringUtils.cleanPath(
-        new String(
-          file.getOriginalFilename().getBytes("8859_1"),
-          StandardCharsets.UTF_8
-        )
-      ),
-      mimetype: req.file.mimetype,
-      filename: req.file.filename,
-      path: req.file.path,
-    };
+// app.post(
+//   "/api/upload/image",
+//   imageUpload.single("attachment"),
+//   async (req, res) => {
+//     const fileInfo = {
+//       // product_id: parseInt(req.body.product_id),
+//       originalname: StringUtils.cleanPath(
+//         new String(
+//           file.getOriginalFilename().getBytes("8859_1"),
+//           StandardCharsets.UTF_8
+//         )
+//       ),
+//       mimetype: req.file.mimetype,
+//       filename: req.file.filename,
+//       path: req.file.path,
+//     };
 
-    // res.send("fileInfo", fileInfo);
-    res.status(200).send(fileInfo);
-    // res.send("req.file", req.file);
-    // res.status(200).send(req.file);
-  }
-);
+//     // res.send("fileInfo", fileInfo);
+//     res.status(200).send(fileInfo);
+//     // res.send("req.file", req.file);
+//     // res.status(200).send(req.file);
+//   }
+// );
 
 // multer file upload
 const fileStorage = multer.diskStorage({
