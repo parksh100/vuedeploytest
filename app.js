@@ -28,7 +28,7 @@ app.use(cors());
 app.use("/static/images", express.static("public/images"));
 app.use("/static/uploads", express.static("uploads")); // 서버에서 이미지를 다운받아야 할때 사용. static("열어줄 폴더")
 
-const user = ["박성훈", "이상영", "잭슨", "박정은", "박채은"];
+// const user = ["박성훈", "이상영", "잭슨", "박정은", "박채은"];
 app.get("/api", (req, res) => {
   // res.send(user);
   res.status(200).send(user);
@@ -366,7 +366,7 @@ app.get("/api/user/:user_id", async (req, res) => {
   res.send(result[0]);
 });
 
-//user 조회 all
+//user 조회 by user_email
 app.get("/api/user/search/:user_email", async (req, res) => {
   const { user_email } = req.params;
   // console.log(user_email);
@@ -374,6 +374,16 @@ app.get("/api/user/search/:user_email", async (req, res) => {
   // console.log(result[0]);
 
   res.send(result[0]);
+});
+
+//user 조회 all
+app.get("/api/user", async (req, res) => {
+  // const { user_email } = req.params;
+  // console.log(user_email);
+  const result = await mysql.query("userList");
+  // console.log(result[0]);
+
+  res.send(result);
 });
 
 //심사보고서 모두 조회 by auditor_email
