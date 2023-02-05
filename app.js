@@ -28,7 +28,7 @@ app.use(cors());
 app.use("/static/images", express.static("public/images"));
 app.use("/static/uploads", express.static("uploads")); // 서버에서 이미지를 다운받아야 할때 사용. static("열어줄 폴더")
 
-// const user = ["박성훈", "이상영", "잭슨", "박정은", "박채은"];
+const user = ["박성훈", "이상영", "잭슨", "박정은", "박채은"];
 app.get("/api", (req, res) => {
   // res.send(user);
   res.status(200).send(user);
